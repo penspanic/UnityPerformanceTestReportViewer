@@ -61,6 +61,7 @@ namespace PerformanceTestReportViewer.UI.Visualizers
         protected VisualElement xAxis;
         protected VisualElement yAxis;
         protected VisualElement legends;
+        protected Label valueTooltip;
 
         protected AbstractVisualizer()
         {
@@ -76,6 +77,7 @@ namespace PerformanceTestReportViewer.UI.Visualizers
             xAxis = this.Q<VisualElement>(nameof(xAxis));
             yAxis = this.Q<VisualElement>(nameof(yAxis));
             legends = this.Q<VisualElement>(nameof(legends));
+            valueTooltip = this.Q<Label>(nameof(valueTooltip));
         }
 
         public abstract bool MustShown();

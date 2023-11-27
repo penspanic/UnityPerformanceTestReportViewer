@@ -42,10 +42,15 @@ namespace PerformanceTestReportViewer.UI.Visualizers
         private double showingMax;
         private SampleElement[] showingElements;
 
+        private List<Rect> barRects = new();
+        private List<Vertex> vertices = new();
+        private List<ushort> indices = new();
+
         public BarsVisualizer()
         {
             AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(layoutPath).CloneTree(this);
             InitCommonVisualElements();
+            RegisterCallback<MouseMoveEvent>(OnMouseMove);
         }
 
         public override bool MustShown()
@@ -120,6 +125,7 @@ namespace PerformanceTestReportViewer.UI.Visualizers
             if (showingElements.Length == 0)
                 return;
 
+            barRects.Clear();
             vertices.Clear();
             indices.Clear();
             if (_groupNames != null)
@@ -128,8 +134,8 @@ namespace PerformanceTestReportViewer.UI.Visualizers
                 showingMax = showingElements.Max(v => v.Values.Max().Value);
                 for (int i = 0; i < _groupNames.Length; ++i)
                 {
-                    GenerateBars(i, _groupNames.Length, showingMin, showingMax,
-                        showingElements.Select(e => e.Values[i].Value).ToArray(), ctx, vertices, indices);
+                    ChartUtility.GenerateBars(i, _groupNames.Length, showingMin, showingMax,
+                        showingElements.Select(e => e.Values[i].Value).ToArray(), GetChartRect(), ctx, barRects, vertices, indices);
                 }
             }
             else
@@ -139,7 +145,7 @@ namespace PerformanceTestReportViewer.UI.Visualizers
                 for (var i = 0; i < showingElements.Length; i++)
                 {
                     SampleElement sampleElement = showingElements[i];
-                    GenerateBars(i, showingElements.Length, showingMin, showingMax, new[] { sampleElement.Average }, ctx, vertices, indices);
+                    ChartUtility.GenerateBars(i, showingElements.Length, showingMin, showingMax, new[] { sampleElement.Average }, GetChartRect(), ctx, barRects, vertices, indices);
                 }
             }
 
@@ -151,64 +157,37 @@ namespace PerformanceTestReportViewer.UI.Visualizers
             mwd.SetAllIndices(indices.ToArray());
         }
 
-        private List<Vertex> vertices = new();
-        //static readonly ushort[] k_Indices = { 0, 1, 2, 3 };
-        private List<ushort> indices = new();
+        #region EventHandlers
 
-        private void GenerateBars(int index, int totalCount, double min, double max, double[] values,
-            MeshGenerationContext ctx, List<Vertex> vertices, List<ushort> indices)
+        private void OnMouseMove(MouseMoveEvent evt)
         {
-            double gap = max - min;
-            Rect chartRect = GetChartRect();
-            float yPosStart = ChartUtility.YPosByIndex(chartRect, index, totalCount, out float ySize);
-            float ySpacing = 1;
-            float eachYSize = (ySize - (values.Length + 1) * ySpacing) / values.Length;
-            float realYSize = Math.Min(10, eachYSize);
-            float yMargin = (ySize - realYSize * values.Length - ySpacing * (values.Length - 1)) / 2f;
-            for (int i = 0; i < values.Length; i++)
+            Vector2 relativeMousePos = evt.mousePosition - renderArea.worldBound.position;
+            if (ChartUtility.TryGetHoveringBarIndex(relativeMousePos, GetChartRect(), barRects, out int index))
             {
-                float yPos = yPosStart + yMargin + i * ySpacing + i * realYSize; 
-                float xPosMin = Mathf.Lerp(chartRect.xMin, chartRect.xMax, 1f - Mathf.Max((float)(values[i] - min) / (float)gap, 0.03f));
-                Rect barRect = default;
-                barRect.yMin = yPos;
-                barRect.yMax = barRect.yMin + realYSize;
-                barRect.xMin = xPosMin;
-                barRect.xMax = chartRect.xMax;
-                Color barColor = GetDataColor(i);
-                AddBarMesh(barRect, barColor, this.vertices, indices);
+                Rect rectInRenderArea = barRects[index];
+                Rect worldRect = renderArea.LocalToWorld(rectInRenderArea);
+                Rect localRect = this.WorldToLocal(worldRect);
+                valueTooltip.visible = true;
+                var worldPos = new Vector3(localRect.center.y, localRect.center.y, 0);
+                valueTooltip.style.left = GetChartRect().center.x;
+                valueTooltip.style.top = worldPos.y - valueTooltip.resolvedStyle.height / 2f;
+                
+                if (_groupNames != null)
+                {
+                    int groupIndex = index % _groupNames.Length;
+                    int valueIndex = index / _groupNames.Length;
+                    valueTooltip.text = showingElements[valueIndex].Values[groupIndex]!.Value.ToString("F2");
+                }
+                else
+                {
+                    valueTooltip.text = showingElements[index].Average.ToString("F2");
+                }
+            }
+            else
+            {
+                valueTooltip.visible = false;
             }
         }
-
-        private void AddBarMesh(Rect rect, Color color, List<Vertex> vertices, List<ushort> indices)
-        {
-            int vertexStartIndex = vertices.Count;
-            vertices.Add(new Vertex() // 0 : top left
-            {
-                position = new Vector3(rect.xMin, rect.yMin, Vertex.nearZ),
-                tint = color
-            });
-            vertices.Add(new Vertex() // 1 : top right
-            {
-                position = new Vector3(rect.xMax, rect.yMin, Vertex.nearZ),
-                tint = color
-            });
-            vertices.Add(new Vertex() // 2 : bottom left
-            {
-                position = new Vector3(rect.xMin, rect.yMax, Vertex.nearZ),
-                tint = color
-            });
-            vertices.Add(new Vertex() // bottom right
-            {
-                position = new Vector3(rect.xMax, rect.yMax, Vertex.nearZ),
-                tint = color
-            });
-
-            indices.Add((ushort)(vertexStartIndex + 0));
-            indices.Add((ushort)(vertexStartIndex + 1));
-            indices.Add((ushort)(vertexStartIndex + 2));
-            indices.Add((ushort)(vertexStartIndex + 1));
-            indices.Add((ushort)(vertexStartIndex + 3));
-            indices.Add((ushort)(vertexStartIndex + 2));
-        }
+        #endregion
     }
 }

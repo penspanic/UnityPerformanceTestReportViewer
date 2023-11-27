@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PerformanceTestReportViewer.UI.Visualizers;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -146,6 +147,78 @@ namespace PerformanceTestReportViewer.UI
             GL.Vertex3(rect.xMin, rect.yMax, 0);
             GL.Vertex3(rect.xMax, rect.yMax, 0);
             GL.End();
+        }
+
+        public static void GenerateBars(int index, int totalCount, double min, double max, double[] values,
+            Rect chartRect, MeshGenerationContext ctx, List<Rect> barRects, List<Vertex> vertices, List<ushort> indices)
+        {
+            double gap = max - min;
+            float yPosStart = ChartUtility.YPosByIndex(chartRect, index, totalCount, out float ySize);
+            float ySpacing = 1;
+            float eachYSize = (ySize - (values.Length + 1) * ySpacing) / values.Length;
+            float realYSize = Math.Min(10, eachYSize);
+            float yMargin = (ySize - realYSize * values.Length - ySpacing * (values.Length - 1)) / 2f;
+            for (int i = 0; i < values.Length; i++)
+            {
+                float yPos = yPosStart + yMargin + i * ySpacing + i * realYSize; 
+                float xPosMin = Mathf.Lerp(chartRect.xMin, chartRect.xMax, 1f - Mathf.Max((float)(values[i] - min) / (float)gap, 0.03f));
+                Rect barRect = default;
+                barRect.yMin = yPos;
+                barRect.yMax = barRect.yMin + realYSize;
+                barRect.xMin = xPosMin;
+                barRect.xMax = chartRect.xMax;
+                barRects.Add(barRect);
+                Color barColor = AbstractVisualizer.GetDataColor(i);
+                AddBarMesh(barRect, barColor, vertices, indices);
+            }
+        }
+
+        public static void AddBarMesh(Rect rect, Color color, List<Vertex> vertices, List<ushort> indices)
+        {
+            int vertexStartIndex = vertices.Count;
+            vertices.Add(new Vertex() // 0 : top left
+            {
+                position = new Vector3(rect.xMin, rect.yMin, Vertex.nearZ),
+                tint = color
+            });
+            vertices.Add(new Vertex() // 1 : top right
+            {
+                position = new Vector3(rect.xMax, rect.yMin, Vertex.nearZ),
+                tint = color
+            });
+            vertices.Add(new Vertex() // 2 : bottom left
+            {
+                position = new Vector3(rect.xMin, rect.yMax, Vertex.nearZ),
+                tint = color
+            });
+            vertices.Add(new Vertex() // bottom right
+            {
+                position = new Vector3(rect.xMax, rect.yMax, Vertex.nearZ),
+                tint = color
+            });
+
+            indices.Add((ushort)(vertexStartIndex + 0));
+            indices.Add((ushort)(vertexStartIndex + 1));
+            indices.Add((ushort)(vertexStartIndex + 2));
+            indices.Add((ushort)(vertexStartIndex + 1));
+            indices.Add((ushort)(vertexStartIndex + 3));
+            indices.Add((ushort)(vertexStartIndex + 2));
+        }
+
+        public static bool TryGetHoveringBarIndex(Vector2 mousePos, Rect chartRect, List<Rect> barRects, out int index)
+        {
+            index = -1;
+            for (int i = 0; i < barRects.Count; i++)
+            {
+                Rect barRect = barRects[i];
+                if (barRect.Contains(mousePos))
+                {
+                    index = i;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
