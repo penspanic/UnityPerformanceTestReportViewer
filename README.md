@@ -7,7 +7,13 @@ Unity Version : 2022.3.14f1
 Performance testing API : 3.0.3
 
 ## Installiation
+`Unity>Package Manager>Add package from git URL...`
+- `https://github.com/penspanic/UnityPerformanceTestReportViewer.git`  
 
+or  
+
+`git clone https://github.com/penspanic/UnityPerformanceTestReportViewer.git`  
+`Unity>Package Manager>Add package from disk...>path_to_UnityPerformanceTestReportViewer`
 
 ## Quick Start
 ### Simple test
@@ -18,7 +24,9 @@ Performance testing API : 3.0.3
 
 ## Extensions
 ### Unity.Entities Extension
-Unity.Entities의 테스트를 위한 확장을 제공합니다.  
+`Unity>Package Manager>Performance Test ReportViewer>Samples>Unity.Entities Extensions`
+Provides an extension for testing Unity.Entities. In particular, it provides performance testing extensions for ECS World.
+
 <!-- # (테스트로 World를 생성하고 실행할 때 World의 System별 소요 시간을 측정할 수 있습니다.) -->
 
 

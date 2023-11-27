@@ -10,7 +10,7 @@ namespace PerformanceTestReportViewer.Definition
     {
     }
 
-    [AttributeUsage(AttributeTargets.Assembly)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class SampleDefinitionContainerAttribute : Attribute
     {
         public Type[] Types { get; }

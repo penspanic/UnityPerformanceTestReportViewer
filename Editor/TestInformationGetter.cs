@@ -29,6 +29,39 @@ namespace PerformanceTestReportViewer
             var sampleDefinitionFactoryFuncs_ = new Dictionary<string, Func<PerformanceTestResultContext, ISampleDefinition[]>>();
             var sampleDefinitionsByCategory_ = new Dictionary<string, List<ISampleDefinition>>();
 
+            void HandleSampleDefinitionContainer(Type containerType)
+            {
+                foreach (ISampleDefinition sampleDefinition in containerType.GetFields(BindingFlags.Static | BindingFlags.Public)
+                             .Where(f => typeof(ISampleDefinition).IsAssignableFrom(f.FieldType))
+                             .Select(f => f.GetValue(null) as ISampleDefinition)
+                             .Select(d => d).Where(d => d != null))
+                {
+                    string definitionName = sampleDefinition.Name;
+                    if (sampleDefinitions_.TryAdd($"{sampleDefinition.Category}.{definitionName}", sampleDefinition) == false)
+                    {
+                        Debug.LogError($"Duplicate class name {containerType.FullName}:{definitionName} with ISampleDefinition!");
+                        continue;
+                    }
+
+                    AddSampleDefinitionsByCategory(sampleDefinition);
+                }
+
+                foreach (ISampleDefinition sampleDefinition in containerType.GetProperties(BindingFlags.Static | BindingFlags.Public)
+                             .Where(f => typeof(ISampleDefinition).IsAssignableFrom(f.PropertyType))
+                             .Select(f => f.GetValue(null) as ISampleDefinition)
+                             .Select(d => d).Where(d => d != null))
+                {
+                    string definitionName = sampleDefinition.Name;
+                    if (sampleDefinitions_.TryAdd($"{sampleDefinition.Category}.{definitionName}", sampleDefinition) == false)
+                    {
+                        Debug.LogError($"Duplicate class name {containerType.FullName}:{definitionName} with ISampleDefinition!");
+                        continue;
+                    }
+
+                    AddSampleDefinitionsByCategory(sampleDefinition);
+                }
+            }
+
             void AddSampleDefinitionsByCategory(ISampleDefinition definition)
             {
                 if (sampleDefinitionsByCategory_.TryGetValue(definition.Category, out List<ISampleDefinition> definitions) == false)
@@ -40,44 +73,12 @@ namespace PerformanceTestReportViewer
             }
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (SampleDefinitionContainerAttribute containerAttribute in assembly.GetCustomAttributes<SampleDefinitionContainerAttribute>())
-                {
-                    foreach (Type containerType in containerAttribute.Types)
-                    {
-                        foreach (ISampleDefinition sampleDefinition in containerType.GetFields(BindingFlags.Static | BindingFlags.Public)
-                                     .Where(f => typeof(ISampleDefinition).IsAssignableFrom(f.FieldType))
-                                     .Select(f => f.GetValue(null) as ISampleDefinition)
-                                     .Select(d => d).Where(d => d != null))
-                        {
-                            string definitionName = sampleDefinition.Name;
-                            if (sampleDefinitions_.TryAdd($"{sampleDefinition.Category}.{definitionName}", sampleDefinition) == false)
-                            {
-                                Debug.LogError($"Duplicate class name {containerType.FullName}:{definitionName} with ISampleDefinition!");
-                                continue;
-                            }
-
-                            AddSampleDefinitionsByCategory(sampleDefinition);
-                        }
-
-                        foreach (ISampleDefinition sampleDefinition in containerType.GetProperties(BindingFlags.Static | BindingFlags.Public)
-                                     .Where(f => typeof(ISampleDefinition).IsAssignableFrom(f.PropertyType))
-                                     .Select(f => f.GetValue(null) as ISampleDefinition)
-                                     .Select(d => d).Where(d => d != null))
-                        {
-                            string definitionName = sampleDefinition.Name;
-                            if (sampleDefinitions_.TryAdd($"{sampleDefinition.Category}.{definitionName}", sampleDefinition) == false)
-                            {
-                                Debug.LogError($"Duplicate class name {containerType.FullName}:{definitionName} with ISampleDefinition!");
-                                continue;
-                            }
-
-                            AddSampleDefinitionsByCategory(sampleDefinition);
-                        }
-                    }
-                }
-
                 foreach (Type type in assembly.GetTypes())
                 {
+                    if (type.GetCustomAttribute<SampleDefinitionContainerAttribute>() != null)
+                    {
+                        HandleSampleDefinitionContainer(type);
+                    }
                     if (type.GetCustomAttribute<ComparableTestAttribute>() != null)
                     {
                         if (comparableTestClasses_.TryAdd(type.FullName, true) == false)

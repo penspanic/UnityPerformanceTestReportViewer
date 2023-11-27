@@ -1,10 +1,9 @@
 using PerformanceTestReportViewer.Definition;
-using PerformanceTestReportViewer.SampleDefinitions;
 using Unity.PerformanceTesting;
 
-[assembly: SampleDefinitionContainer(typeof(SystemSampleDefinitions))]
 namespace PerformanceTestReportViewer.SampleDefinitions
 {
+    [SampleDefinitionContainer]
     public static class SystemSampleDefinitions
     {
         private static string Category => "System";

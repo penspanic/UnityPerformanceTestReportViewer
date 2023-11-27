@@ -11,7 +11,7 @@ namespace PerformanceTestReportViewer
     {
         public static readonly ViewerModule Instance = new();
         public Run PerformanceTestResults { get; private set; }
-        public PerformanceTestResultContext ResultContext { get; set; }
+        public PerformanceTestResultContext ResultContext { get; private set; }
         public ViewerOptions ViewerOptions { get; set; }
 
         private ConcurrentQueue<Action> unityThreadJobs = new();
@@ -20,6 +20,7 @@ namespace PerformanceTestReportViewer
 
         public void Load()
         {
+            TestInformationGetter.ClearCache();
             PerformanceTestResults = null;
             if (File.Exists(performanceTestResultsPath) == false)
                 return;
