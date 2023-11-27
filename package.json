@@ -1,0 +1,30 @@
+{
+	"name": "com.penspanic.performancetestreportviewer",
+	"displayName": "Performance Test Report Viewer",
+	"description": "Viewer for report from performance testing framework",
+	"keywords": [
+		"Performance",
+		"Viewer",
+		"Performance Testing",
+		"Test",
+        "TDD"
+	],
+	"category": "Utility",
+	"version": "0.0.1",
+	"unity": "2018.1",
+	"dependencies": {
+		"com.unity.test-framework.performance": "3.0.3"
+	},
+	"samples": [
+		{
+			"displayName": "Examples",
+			"description": "Test cases and usages",
+			"path": "Samples~/Examples"
+		},
+		{
+			"displayName": "Unity.Entities Extensions",
+			"description": "Unity.Entities extensions for performance testing",
+			"path": "Samples~/Unity.Entities Extensions"
+		}
+	]
+}

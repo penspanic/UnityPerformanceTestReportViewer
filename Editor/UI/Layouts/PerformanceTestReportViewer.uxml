@@ -1,0 +1,33 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="toolbar" style="flex-grow: 1; color: rgb(0, 0, 0); justify-content: flex-start; align-items: auto; flex-direction: column; align-self: auto; max-height: 20px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgba(99, 99, 99, 0.52); border-right-color: rgba(99, 99, 99, 0.52); border-top-color: rgba(99, 99, 99, 0.52); border-bottom-color: rgba(99, 99, 99, 0.52);">
+        <ui:Button text="Reload" display-tooltip-when-elided="true" name="reloadButton" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 1px; padding-right: 1px; padding-top: 1px; padding-bottom: 1px; align-self: flex-start; font-size: 14px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="options" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); max-height: 40px; min-height: 60px; flex-direction: row;">
+        <ui:GroupBox name="left" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-grow: 1;">
+            <ui:GroupBox name="categoryGroupBox" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                <ui:Label tabindex="-1" text="Category" display-tooltip-when-elided="true" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 16px; -unity-text-align: middle-left; width: 81px;" />
+                <ui:ScrollView mode="Horizontal" name="sampleTypesScrollView" />
+            </ui:GroupBox>
+            <ui:GroupBox name="contextGroupBox" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                <ui:Label tabindex="-1" text="Context" display-tooltip-when-elided="true" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 16px; -unity-text-align: middle-left; width: 81px;" />
+                <ui:ScrollView mode="Horizontal" name="contextsScrollView" />
+            </ui:GroupBox>
+        </ui:GroupBox>
+        <ui:GroupBox name="right" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-grow: 1;">
+            <ui:GroupBox name="viewOptionGroupBox" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                <ui:Label tabindex="-1" text="View Option" display-tooltip-when-elided="true" name="Label" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 14px; -unity-text-align: middle-left; width: 100px;" />
+                <ui:DropdownField label="Data Count" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="dataCountDropdown" style="margin-left: 8px; margin-right: 8px; flex-direction: row; align-items: stretch;" />
+                <ui:DropdownField label="Sort" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="sortMethodDropdown" style="margin-left: 8px; margin-right: 8px;" />
+                <ui:DropdownField label="Viewer" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="viewerTypeDropdown" style="margin-left: 8px; margin-right: 8px;" />
+            </ui:GroupBox>
+            <ui:GroupBox name="tagGroupBox" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                <ui:Label tabindex="-1" text="Tags" display-tooltip-when-elided="true" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 16px; -unity-text-align: middle-left; width: 81px;" />
+                <ui:ScrollView mode="Horizontal" name="tagsScrollView" />
+            </ui:GroupBox>
+        </ui:GroupBox>
+    </ui:VisualElement>
+    <ui:GroupBox name="contentGroupBox" style="flex-direction: row; flex-shrink: 1; flex-grow: 1;">
+        <PerformanceTestReportViewer.UI.TestResultListView name="testResultListView" style="min-width: 30%; flex-grow: 0;" />
+        <ui:ScrollView name="viewPanel" style="flex-grow: 1;" />
+    </ui:GroupBox>
+</ui:UXML>

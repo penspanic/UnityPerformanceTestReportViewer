@@ -1,0 +1,7 @@
+{
+  "name": "PerformanceTestReportViewer",
+  "references": [
+    "Unity.PerformanceTesting"
+  ],
+  "rootNamespace": "PerformanceTestReportViewer"
+}

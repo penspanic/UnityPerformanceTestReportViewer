@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Externals/PerformanceTestReportViewer/UI/Styles/PerformanceTestingReportViewerWindow.uss?fileID=7433441132597879392&amp;guid=e3525ea95753f484b906cb7dd3556bde&amp;type=3#PerformanceTestingReportViewerWindow" />
+    <PerformanceTestReportViewer.UI.PerformanceTestReportViewer name="PerformanceTestReportViewer" style="justify-content: flex-start; align-items: stretch; align-self: auto; height: 100%;" />
+</ui:UXML>
