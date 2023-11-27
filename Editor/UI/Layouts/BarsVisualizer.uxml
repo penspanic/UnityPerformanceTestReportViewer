@@ -3,13 +3,13 @@
         <ui:Label tabindex="-1" display-tooltip-when-elided="true" name="headerArea" style="background-color: rgb(55, 55, 55);">
             <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="header" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 16px; -unity-text-align: middle-center; -unity-font-style: bold;" />
         </ui:Label>
-        <ui:VisualElement name="chartArea" style="flex-grow: 1; flex-direction: row; padding-top: 20px; padding-left: 10px;">
+        <ui:VisualElement name="chartArea" style="flex-grow: 1; flex-direction: row; padding-top: 20px; padding-left: 20px;">
             <ui:VisualElement name="renderArea" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0.61); border-right-color: rgba(0, 0, 0, 0.61); border-top-color: rgba(0, 0, 0, 0.61); border-bottom-color: rgba(0, 0, 0, 0.61); border-left-width: 2px; border-right-width: 2px; border-top-width: 2px; border-bottom-width: 2px;" />
             <ui:VisualElement name="yAxis" style="flex-grow: 1; width: 80px; max-width: 50%; min-width: 50%;" />
         </ui:VisualElement>
-        <ui:VisualElement name="descriptionArea" style="flex-grow: 1; width: auto; height: 15%; max-height: 15%; min-height: 15%; margin-left: 10px;">
-            <ui:VisualElement name="xAxis" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);" />
-            <ui:VisualElement name="legends" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-left: 0; margin-right: 0; margin-top: 30px; margin-bottom: 0; flex-wrap: wrap;" />
+        <ui:VisualElement name="descriptionArea" style="margin-left: 20px;">
+            <ui:VisualElement name="xAxis" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 5px; max-height: 25px; min-height: 25px; height: 25px;" />
+            <ui:VisualElement name="legends" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0); padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; flex-wrap: wrap; flex-direction: row;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -38,7 +38,10 @@ namespace PerformanceTestReportViewer
                 foreach (string groupName in uniqueSampleGroupNames)
                 {
                     SampleGroup sampleGroup = performanceTestResult.SampleGroups.Find(g => g.Name == groupName);
-                    valuesByGroupName[groupName].Add(sampleGroup?.Average ?? null);
+                    if (sampleGroup == null)
+                        continue;
+
+                    valuesByGroupName[groupName].Add(sampleGroup.Average);
                 }
             }
 

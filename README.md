@@ -1,6 +1,8 @@
 ## Performance Test Report Viewer
 This tool extends Unity's performance testing API to run various types of tests and visualize them in charts.
 
+When you create multiple tests and want to compare the results, this tool will help you to compare the results of the tests in a chart.
+
 ## Prerequisites
 API Compatibility Level : .Net Framework  
 Unity Version : 2022.3.14f1

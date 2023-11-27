@@ -68,7 +68,7 @@ namespace PerformanceTestReportViewer.UI
         {
             parent.Clear();
             valueCount = Math.Max(valueCount, 2);
-            var axisNameLabel = CreateLabelNonLayout(axisName, new Rect(new Vector2(0, 5), labelSize + new Vector2(20, 25)));
+            var axisNameLabel = CreateLabelNonLayout(axisName, new Rect(new Vector2(0, 13), labelSize + new Vector2(20, 25)));
             axisNameLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
             axisNameLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
             parent.Add(axisNameLabel);
@@ -127,8 +127,10 @@ namespace PerformanceTestReportViewer.UI
         {
             var label = new Label() { text = text };
             label.style.position = Position.Absolute;
-            label.style.width = rect.size.x;
-            label.style.height = rect.size.y;
+            //label.style.width = rect.size.x;
+            label.style.maxWidth = rect.size.x;
+            //label.style.height = rect.size.y;
+            label.style.maxHeight = rect.size.y;
             label.style.left = rect.xMin;
             label.style.top = rect.yMin;
             label.style.unityTextAlign = TextAnchor.MiddleCenter;

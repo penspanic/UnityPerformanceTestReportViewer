@@ -86,33 +86,49 @@ namespace PerformanceTestReportViewer.UI.Visualizers
         {
             return (index % 7) switch
             {
-                0 => Color.blue,
-                1 => Color.red,
-                2 => Color.green,
-                3 => Color.yellow,
-                4 => Color.gray,
-                5 => Color.magenta,
-                6 => Color.black
+                0 => new Color32(143, 0, 49, 255),
+                1 => new Color32(247, 155, 25, 255),
+                2 => new Color32(2, 143, 163, 255),
+                3 => new Color32(145, 25, 142, 255),
+                4 => new Color32(0, 135, 90, 255),
+                5 => new Color32(194, 112, 192, 255),
+                6 => new Color32(0, 168, 204, 255),
             };
         }
 
         protected void SetHeaderText()
         {
             var names = Item.TestResults.Select(t => t.Name).ToArray();
+
+            void Do(string testNameWithNamespace, string[] parameters)
+            {
+                string @namespace = testNameWithNamespace.Substring(0, testNameWithNamespace.LastIndexOf('.'));
+                string testName = testNameWithNamespace.Substring(@namespace.Length + 1);
+                if (parameters != null && parameters.Length > 0 && parameters.Any(p => string.IsNullOrEmpty(p) == false))
+                {
+                    header.text = $"{@namespace}<br><{testName}><br>[{string.Join(", ", parameters)}]";
+                }
+                else
+                {
+                    header.text = $"{@namespace}<br><{testName}>";
+                }
+            }
+
             if (GroupedItem != null)
             {
-                header.text = $"{GroupedItem.GroupedResult.TestGroupName}<br>[{string.Join(", ", GroupedItem.GroupedResult.Children.Select(c => c.Parameter))}]";
+                Do(GroupedItem.GroupedResult.TestGroupName, GroupedItem.GroupedResult.Children.Select(c => c.Parameter).ToArray());
             }
             else
             {
                 if (Utility.TryExtractCommonStrings(names, out string commonString, out string[] variations))
                 {
                     commonString = commonString.TrimEnd('.');
-                    header.text = $"{commonString}<br>[{string.Join(", ", variations)}]";
+                    
+                    Do(commonString, variations);
                 }
-                else
+                else if (names.Length == 1)
                 {
-                    header.text = string.Join(", ", names);
+                    Do(names[0], null);
                 }
             }
         }
