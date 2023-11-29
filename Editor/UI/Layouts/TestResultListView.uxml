@@ -1,8 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:GroupBox name="TestResultListView" style="background-color: rgb(120, 120, 120); width: auto;">
+    <ui:GroupBox name="TestResultListView" style="width: auto;">
         <ui:Label tabindex="-1" text="Results" display-tooltip-when-elided="true" name="header" style="-unity-text-align: upper-center; -unity-font-style: bold; font-size: 20px; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
         <ui:ScrollView>
-            <ui:TreeView view-data-key="unity-tree-view" focusable="true" name="resultsTreeView" style="background-color: rgb(120, 120, 120);" />
+            <ui:TreeView view-data-key="unity-tree-view" focusable="true" name="resultsTreeView" />
         </ui:ScrollView>
     </ui:GroupBox>
 </ui:UXML>
