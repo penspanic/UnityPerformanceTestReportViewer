@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace PerformanceTestReportViewer.UI
+namespace PerformanceTestReportViewer.Editor.UI
 {
     public class TestResultListView : VisualElement
     {
@@ -117,7 +117,7 @@ namespace PerformanceTestReportViewer.UI
             Dictionary<string, GroupedResultItem> groupedResultItems = new();
             foreach (PerformanceTestResult testResult in ViewerModule.Instance.PerformanceTestResults.Results)
             {
-                bool isParameterizedTest = Utility.IsParameterizedTest(testResult.Name, out string groupedDefinitionName, out string parameter);
+                bool isParameterizedTest = PerformanceTestReportViewerUtility.IsParameterizedTest(testResult.Name, out string groupedDefinitionName, out string parameter);
                 if (isParameterizedTest || TestInformationGetter.IsComparableTest(testResult.ClassName))
                 {
                     if (string.IsNullOrEmpty(groupedDefinitionName))

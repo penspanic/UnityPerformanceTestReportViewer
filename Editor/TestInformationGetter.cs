@@ -124,7 +124,7 @@ namespace PerformanceTestReportViewer
         public static ISampleDefinition FindSampleGroupDefinition(string sampleGroupName, PerformanceTestResultContext context)
         {
             LazyInit();
-            if (Utility.TryParseFromSampleGroupName(sampleGroupName, out string sampleTargetName, out string categoryName, out string definitionName) == false)
+            if (PerformanceTestReportViewerUtility.TryParseFromSampleGroupName(sampleGroupName, out string sampleTargetName, out string categoryName, out string definitionName) == false)
                 throw new Exception($"Unable to parse sample group name {sampleGroupName}!");
 
             if (sampleDefinitions.TryGetValue($"{categoryName}.{definitionName}", out ISampleDefinition sampleDefinition))

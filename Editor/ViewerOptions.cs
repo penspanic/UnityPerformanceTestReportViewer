@@ -5,11 +5,11 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using PerformanceTestReportViewer.Definition;
-using PerformanceTestReportViewer.UI;
+using PerformanceTestReportViewer.Editor.UI;
 using Unity.PerformanceTesting.Data;
 using UnityEngine;
 
-namespace PerformanceTestReportViewer
+namespace PerformanceTestReportViewer.Editor
 {
     [Serializable]
     public class ViewerOptions
@@ -59,7 +59,7 @@ namespace PerformanceTestReportViewer
 
         public bool IsOn(SampleGroup sampleGroup)
         {
-            if (Utility.TryParseFromSampleGroupName(sampleGroup.Name, out string contextName, out string categoryName, out string definitionName) == false)
+            if (PerformanceTestReportViewerUtility.TryParseFromSampleGroupName(sampleGroup.Name, out string contextName, out string categoryName, out string definitionName) == false)
                 return true;
 
             return IsOn(contextName, categoryName, definitionName);

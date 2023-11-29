@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using PerformanceTestReportViewer.Definition;
-using PerformanceTestReportViewer.UI.Visualizers;
+using PerformanceTestReportViewer.Editor.UI.Visualizers;
 using Unity.PerformanceTesting.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using PopupWindow = UnityEditor.PopupWindow;
 
-namespace PerformanceTestReportViewer.UI
+namespace PerformanceTestReportViewer.Editor.UI
 {
     public class PerformanceTestReportViewer : VisualElement
     {

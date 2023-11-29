@@ -5,11 +5,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace PerformanceTestReportViewer
+namespace PerformanceTestReportViewer.Editor
 {
     public class PerformanceTestingReportViewerWindow : EditorWindow
     {
-        private UI.PerformanceTestReportViewer viewer;
+        private Editor.UI.PerformanceTestReportViewer viewer;
         private ViewerOptions viewerOptions;
 
         [MenuItem("Window/Analysis/PerformanceTestingReportViewer %#&V")]
@@ -26,7 +26,7 @@ namespace PerformanceTestReportViewer
             string path = Constants.LayoutPath + "/PerformanceTestingReportViewerWindow.uxml";
             var asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(path);
             asset.CloneTree(rootVisualElement);
-            viewer = rootVisualElement.Q<UI.PerformanceTestReportViewer>();
+            viewer = rootVisualElement.Q<Editor.UI.PerformanceTestReportViewer>();
 
             if (File.Exists(EditorConfigPath))
                 viewerOptions = ViewerOptions.DeserializeFromString(File.ReadAllText(EditorConfigPath));

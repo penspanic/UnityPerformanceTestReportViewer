@@ -1,4 +1,4 @@
-namespace PerformanceTestReportViewer.UI
+namespace PerformanceTestReportViewer.Editor.UI
 {
     public enum SortMethod
     {

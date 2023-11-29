@@ -50,7 +50,7 @@ namespace PerformanceTestReportViewer.Editor
             string sampleTarget)
         {
             return new SampleGroup(
-                Utility.FormatSampleGroupName(sampleTarget, categoryName, sampleDefinition.Name),
+                PerformanceTestReportViewerUtility.FormatSampleGroupName(sampleTarget, categoryName, sampleDefinition.Name),
                 sampleDefinition.SampleUnit,
                 increaseIsBetter: sampleDefinition.IncreaseIsBetter.GetValueOrDefault(false)
             );

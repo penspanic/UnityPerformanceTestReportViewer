@@ -23,7 +23,7 @@
         </ui:GroupBox>
     </ui:VisualElement>
     <ui:GroupBox name="contentGroupBox" style="flex-direction: row; flex-shrink: 1; flex-grow: 1;">
-        <PerformanceTestReportViewer.UI.TestResultListView name="testResultListView" style="min-width: 30%; flex-grow: 0; max-width: 50%;" />
+        <PerformanceTestReportViewer.Editor.UI.TestResultListView name="testResultListView" style="min-width: 30%; flex-grow: 0; max-width: 50%;" />
         <ui:ScrollView name="viewPanel" style="flex-grow: 1;" />
     </ui:GroupBox>
 </ui:UXML>

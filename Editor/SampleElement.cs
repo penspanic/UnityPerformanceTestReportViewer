@@ -1,7 +1,7 @@
 using System.Linq;
 using PerformanceTestReportViewer.Definition;
 
-namespace PerformanceTestReportViewer
+namespace PerformanceTestReportViewer.Editor
 {
     public class SampleElement
     {
@@ -23,7 +23,7 @@ namespace PerformanceTestReportViewer
             if (testResultOptions != null && testResultOptions.MustShown(SampleDefinition) == false)
                 return false;
 
-            if (Utility.TryParseFromSampleGroupName(RawName, out string context, out string category, out string definition) == false)
+            if (PerformanceTestReportViewerUtility.TryParseFromSampleGroupName(RawName, out string context, out string category, out string definition) == false)
                 return false;
 
             if (options.IsSampleTargetOn(context) == false)

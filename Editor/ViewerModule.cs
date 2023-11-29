@@ -5,7 +5,7 @@ using PerformanceTestReportViewer.Definition;
 using Unity.PerformanceTesting.Data;
 using UnityEngine;
 
-namespace PerformanceTestReportViewer
+namespace PerformanceTestReportViewer.Editor
 {
     public class ViewerModule
     {

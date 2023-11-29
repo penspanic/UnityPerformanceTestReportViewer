@@ -6,3 +6,19 @@
 .fit-field > Label {
     min-width: 50px;
 }
+
+.threestate-toggle-checkmark-checked {
+    background-image: resource('uipackageresources/images/d_toggle_on.png');
+}
+
+.threestate-toggle-checkmark-middlestate {
+    background-image: resource('middleState');
+}
+
+.threestate-toggle-checkmark-unchecked {
+    background-image: resource('uipackageresources/images/d_toggle_bg.png');
+}
+
+.threestate-toggle-check-mark {
+    -unity-background-image-tint-color: white;
+}

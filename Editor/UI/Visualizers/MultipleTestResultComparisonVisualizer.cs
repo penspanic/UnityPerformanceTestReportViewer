@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.UIElements;
 
-namespace PerformanceTestReportViewer.UI.Visualizers
+namespace PerformanceTestReportViewer.Editor.UI.Visualizers
 {
     public class MultipleTestResultComparisonVisualizer : AbstractVisualizer
     {

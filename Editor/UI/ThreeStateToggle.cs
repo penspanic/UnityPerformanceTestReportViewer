@@ -3,10 +3,17 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace PerformanceTestReportViewer.UI
+namespace PerformanceTestReportViewer.Editor.UI
 {
     public class ThreeStateToggle : VisualElement
     {
+        public class Classes
+        {
+            public const string checkmark_unchecked = "threestate-toggle-checkmark-unchecked";
+            public const string checkmark_checked = "threestate-toggle-checkmark-checked";
+            public const string checkmark_middlestate = "threestate-toggle-checkmark-middlestate";
+        }
+
         private new class UxmlTraits : VisualElement.UxmlTraits
         {
             UxmlEnumAttributeDescription<StateType> m_StateAttribute = new(){ name = "state" };
@@ -88,13 +95,22 @@ namespace PerformanceTestReportViewer.UI
             switch (_state)
             {
                 case StateType.Unchecked:
-                    checkMarkImage.image = null;
+                    checkMarkImage.RemoveFromClassList(Classes.checkmark_checked);
+                    checkMarkImage.RemoveFromClassList(Classes.checkmark_middlestate);
+
+                    checkMarkImage.AddToClassList(Classes.checkmark_unchecked);
                     break;
                 case StateType.MiddleState:
-                    checkMarkImage.image = AssetDatabase.LoadAssetAtPath<Texture>($"{Constants.SpritesPath}/middleState.png");
+                    checkMarkImage.RemoveFromClassList(Classes.checkmark_checked);
+                    checkMarkImage.RemoveFromClassList(Classes.checkmark_unchecked);
+
+                    checkMarkImage.AddToClassList(Classes.checkmark_middlestate);
                     break;
                 case StateType.Checked:
-                    checkMarkImage.image = AssetDatabase.LoadAssetAtPath<Texture>($"{Constants.SpritesPath}/checked.png");
+                    checkMarkImage.RemoveFromClassList(Classes.checkmark_unchecked);
+                    checkMarkImage.RemoveFromClassList(Classes.checkmark_middlestate);
+
+                    checkMarkImage.AddToClassList(Classes.checkmark_checked);
                     break;
             }
         }

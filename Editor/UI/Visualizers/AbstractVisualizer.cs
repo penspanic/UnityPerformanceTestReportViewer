@@ -4,7 +4,7 @@ using Unity.PerformanceTesting.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace PerformanceTestReportViewer.UI.Visualizers
+namespace PerformanceTestReportViewer.Editor.UI.Visualizers
 {
     public abstract class ItemData
     {
@@ -122,7 +122,7 @@ namespace PerformanceTestReportViewer.UI.Visualizers
             }
             else
             {
-                if (Utility.TryExtractCommonStrings(names, out string commonString, out string[] variations))
+                if (PerformanceTestReportViewerUtility.TryExtractCommonStrings(names, out string commonString, out string[] variations))
                 {
                     commonString = commonString.TrimEnd('.');
                     

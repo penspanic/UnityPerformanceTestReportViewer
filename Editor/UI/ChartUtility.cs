@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PerformanceTestReportViewer.UI.Visualizers;
+using PerformanceTestReportViewer.Editor.UI.Visualizers;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace PerformanceTestReportViewer.UI
+namespace PerformanceTestReportViewer.Editor.UI
 {
     public static class ChartUtility
     {

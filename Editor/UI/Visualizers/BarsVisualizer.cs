@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace PerformanceTestReportViewer.UI.Visualizers
+namespace PerformanceTestReportViewer.Editor.UI.Visualizers
 {
     public class BarsVisualizer : AbstractVisualizer
     {

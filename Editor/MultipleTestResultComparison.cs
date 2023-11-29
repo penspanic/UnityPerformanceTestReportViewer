@@ -4,7 +4,7 @@ using System.Linq;
 using PerformanceTestReportViewer.Definition;
 using Unity.PerformanceTesting.Data;
 
-namespace PerformanceTestReportViewer
+namespace PerformanceTestReportViewer.Editor
 {
     public class MultipleTestResultComparison
     {
