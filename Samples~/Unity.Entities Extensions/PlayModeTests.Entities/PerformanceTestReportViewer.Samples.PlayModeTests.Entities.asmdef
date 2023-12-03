@@ -1,0 +1,31 @@
+{
+    "name": "PerformanceTestReportViewer.Samples.PlayModeTests.Entities",
+    "rootNamespace": "",
+    "references": [
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Unity.PerformanceTesting",
+        "Unity.PerformanceTesting.Editor",
+        "PerformanceTestReportViewer",
+        "PerformanceTestReportViewer.Editor",
+        "Unity.Collections",
+        "Unity.Burst",
+        "Unity.Entities",
+        "Unity.Entities.Editor",
+        "Unity.Entities.Tests",
+        "Unity.Mathematics"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
