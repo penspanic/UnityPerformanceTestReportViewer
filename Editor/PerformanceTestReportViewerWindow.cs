@@ -7,16 +7,16 @@ using UnityEngine.UIElements;
 
 namespace PerformanceTestReportViewer.Editor
 {
-    public class PerformanceTestingReportViewerWindow : EditorWindow
+    public class PerformanceTestReportViewerWindow : EditorWindow
     {
         private Editor.UI.PerformanceTestReportViewer viewer;
         private ViewerOptions viewerOptions;
 
-        [MenuItem("Window/Analysis/PerformanceTestingReportViewer %#&V")]
+        [MenuItem("Window/Analysis/Performance Test Report Viewer %#&V")]
         public static void ShowExample()
         {
-            PerformanceTestingReportViewerWindow wnd = GetWindow<PerformanceTestingReportViewerWindow>();
-            wnd.titleContent = new GUIContent("PerformanceTestingReportViewerWindow");
+            PerformanceTestReportViewerWindow wnd = GetWindow<PerformanceTestReportViewerWindow>();
+            wnd.titleContent = new GUIContent("PerformanceTestReportViewerWindow");
         }
 
         protected virtual string EditorConfigPath => Path.Combine(Application.persistentDataPath, "PerformanceTestingReportViewerConfig.json");

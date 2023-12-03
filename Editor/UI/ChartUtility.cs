@@ -23,7 +23,7 @@ namespace PerformanceTestReportViewer.Editor.UI
         {
             ySize = rect.height / count;
             if (count < 2)
-                return rect.yMax;
+                return rect.yMin;
 
             return rect.yMin + ySize * dataIndex;
         }
@@ -153,7 +153,8 @@ namespace PerformanceTestReportViewer.Editor.UI
             Rect chartRect, MeshGenerationContext ctx, List<Rect> barRects, List<Vertex> vertices, List<ushort> indices)
         {
             double gap = max - min;
-            float yPosStart = ChartUtility.YPosByIndex(chartRect, index, totalCount, out float ySize);
+
+            float yPosStart = YPosByIndex(chartRect, index, totalCount, out float ySize);
             float ySpacing = 1;
             float yMargin = 6;
             float eachYSize = (ySize - (2 * yMargin) - (values.Length * ySpacing)) / values.Length;
