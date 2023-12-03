@@ -3,11 +3,11 @@ This tool extends Unity's performance testing API to run various types of tests 
 
 When you create multiple tests and want to compare the results, this tool will help you to compare the results of the tests in a chart.
 
-![img](Documentation~/tool screenshot.png)
+![img](Documentation~/tool%20screenshot.png)
 
-| Compare tests                              | Parameterized tests                           |
-|--------------------------------------------|-----------------------------------------------|
-| ![img](Documentation~/comparable test.png) | ![img](Documentation~/parameterized test.png) |
+| Compare tests                             | Parameterized tests                          |
+|-------------------------------------------|----------------------------------------------|
+| ![img](Documentation~/comparable%20test.png) | ![img](Documentation~/parameterized%20test.png) |
 
 
 
@@ -118,7 +118,7 @@ Open PerformanceTestReportViewer window.
 (Window/Analysis/Performance Test Report Viewer, Ctrl+Shift+Alt+V)
 
 Some viewing options are available in the window.  
-![img](Documentation~/viewer window.png)
+![img](Documentation~/viewer%20window.png)
 
 
 ## Extensions
