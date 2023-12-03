@@ -155,9 +155,10 @@ namespace PerformanceTestReportViewer.Editor.UI
             double gap = max - min;
             float yPosStart = ChartUtility.YPosByIndex(chartRect, index, totalCount, out float ySize);
             float ySpacing = 1;
-            float eachYSize = (ySize - (values.Length + 1) * ySpacing) / values.Length;
+            float yMargin = 6;
+            float eachYSize = (ySize - (2 * yMargin) - (values.Length * ySpacing)) / values.Length;
             float realYSize = Math.Min(10, eachYSize);
-            float yMargin = (ySize - realYSize * values.Length - ySpacing * (values.Length - 1)) / 2f;
+            yMargin = (ySize - (realYSize + ySpacing) * values.Length) / 2f;
             for (int i = 0; i < values.Length; i++)
             {
                 float yPos = yPosStart + yMargin + i * ySpacing + i * realYSize; 

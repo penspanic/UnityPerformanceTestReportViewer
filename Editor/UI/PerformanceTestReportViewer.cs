@@ -18,8 +18,10 @@ namespace PerformanceTestReportViewer.Editor.UI
 
         private static readonly string layoutPath = $"{Constants.LayoutPath}/{nameof(PerformanceTestReportViewer)}.uxml";
 
+        public event Action RequestReload;
         public event Action RequestRefresh;
-        
+
+        private Button reloadButton;
         private ScrollView sampleTypesScrollView;
         private ScrollView contextsScrollView;
         private TestResultListView testResultListView;
@@ -37,6 +39,7 @@ namespace PerformanceTestReportViewer.Editor.UI
         {
             AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(layoutPath).CloneTree(this);
 
+            reloadButton = this.Q<Button>(nameof(reloadButton));
             sampleTypesScrollView = this.Q<ScrollView>(nameof(sampleTypesScrollView));
             contextsScrollView = this.Q<ScrollView>(nameof(contextsScrollView));
             testResultListView = this.Q<TestResultListView>(nameof(testResultListView));
@@ -46,6 +49,8 @@ namespace PerformanceTestReportViewer.Editor.UI
             viewerTypeDropdown = this.Q<DropdownField>(nameof(viewerTypeDropdown));
             tagsScrollView = this.Q<ScrollView>(nameof(tagsScrollView));
 
+            testResultListView.OnTreeViewItemSelected += OnTreeViewItemSelected;
+            reloadButton.clicked += () => RequestReload?.Invoke();
             RequestRefresh += Refresh;
         }
 
@@ -58,8 +63,6 @@ namespace PerformanceTestReportViewer.Editor.UI
                 viewerOptions.IsSampleTargetOn, viewerOptions.SetIsSampleTargetOn,
                 () => RequestRefresh?.Invoke());
             testResultListView.Init(viewerOptions);
-
-            testResultListView.OnTreeViewItemSelected += OnTreeViewItemSelected;
         }
 
         private void Refresh()

@@ -174,8 +174,8 @@ namespace PerformanceTestReportViewer.Editor.UI.Visualizers
                 
                 if (_groupNames != null)
                 {
-                    int groupIndex = index % _groupNames.Length;
-                    int valueIndex = index / _groupNames.Length;
+                    int groupIndex = index / showingElements.Length;
+                    int valueIndex = index % showingElements.Length;
                     valueTooltip.text = showingElements[valueIndex].Values[groupIndex]!.Value.ToString("F2");
                 }
                 else

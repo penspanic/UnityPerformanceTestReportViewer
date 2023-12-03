@@ -65,18 +65,7 @@ namespace PerformanceTestReportViewer.Editor.UI
         {
             AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(layoutPath).CloneTree(this);
             resultsTreeView = this.Q<TreeView>(nameof(resultsTreeView));
-        }
 
-        public void Init(ViewerOptions viewerOptions)
-        {
-            this.viewerOptions = viewerOptions;
-
-            resultsTreeView.Clear();
-
-            if (ViewerModule.Instance.PerformanceTestResults == null)
-                return;
-
-            resultsTreeView.SetRootItems(BuildTreeDataList());
             resultsTreeView.makeItem = MakeItem;
             resultsTreeView.bindItem = BindItem;
 
@@ -88,6 +77,17 @@ namespace PerformanceTestReportViewer.Editor.UI
                 var item = selectedList.Single() as ITreeViewItem;
                 OnTreeViewItemSelected?.Invoke(item);
             };
+        }
+
+        public void Init(ViewerOptions viewerOptions)
+        {
+            this.viewerOptions = viewerOptions;
+            resultsTreeView.Clear();
+
+            if (ViewerModule.Instance.PerformanceTestResults == null)
+                return;
+
+            resultsTreeView.SetRootItems(BuildTreeDataList());
             resultsTreeView.ExpandRootItems();
         }
 

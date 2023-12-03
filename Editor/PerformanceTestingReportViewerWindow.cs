@@ -27,7 +27,12 @@ namespace PerformanceTestReportViewer.Editor
             var asset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(path);
             asset.CloneTree(rootVisualElement);
             viewer = rootVisualElement.Q<Editor.UI.PerformanceTestReportViewer>();
+            viewer.RequestReload += () => InitViewer(viewer);
+            InitViewer(viewer);
+        }
 
+        private void InitViewer(Editor.UI.PerformanceTestReportViewer viewer)
+        {
             if (File.Exists(EditorConfigPath))
                 viewerOptions = ViewerOptions.DeserializeFromString(File.ReadAllText(EditorConfigPath));
             else
@@ -38,6 +43,7 @@ namespace PerformanceTestReportViewer.Editor
             ViewerModule.Instance.ViewerOptions = viewerOptions;
             
             viewer.Init(viewerOptions);
+            
         }
 
         private void Update()
