@@ -17,6 +17,13 @@ namespace PerformanceTestReportViewer.Editor.UI
             PerformanceTestResult[] GetTestResults();
         }
 
+        public class LogicalTreeViewItem : ITreeViewItem
+        {
+            public string Name;
+            public List<ITreeViewItem> Children = new();
+            public PerformanceTestResult[] GetTestResults() => Children.SelectMany(c => c.GetTestResults()).ToArray();
+        }
+
         public class SingleResultItem : ITreeViewItem
         {
             public string TestName;
@@ -27,6 +34,7 @@ namespace PerformanceTestReportViewer.Editor.UI
         // 1, 2, 10, 100,...
         public class GroupedResultItem : ITreeViewItem
         {
+            public string Namespace;
             public string TestGroupName;
             public List<GroupedParameterizedResultItem> Children = new();
             public PerformanceTestResult[] GetTestResults() => Children.Select(c => c.TestResult).ToArray();
@@ -80,6 +88,7 @@ namespace PerformanceTestReportViewer.Editor.UI
                 var item = selectedList.Single() as ITreeViewItem;
                 OnTreeViewItemSelected?.Invoke(item);
             };
+            resultsTreeView.ExpandRootItems();
         }
 
         private VisualElement MakeItem()
@@ -91,7 +100,11 @@ namespace PerformanceTestReportViewer.Editor.UI
         {
             var label = element as Label;
             var item = resultsTreeView.GetItemDataForIndex<ITreeViewItem>(index);
-            if (item is GroupedResultItem groupedResultItem)
+            if (item is LogicalTreeViewItem logicalTreeViewItem)
+            {
+                label.text = logicalTreeViewItem.Name;
+            }
+            else if (item is GroupedResultItem groupedResultItem)
             {
                 label.text = $"Group|{groupedResultItem.TestGroupName} {groupedResultItem.Children.Count} Tests";
             }
@@ -115,44 +128,67 @@ namespace PerformanceTestReportViewer.Editor.UI
 
             List<TreeViewItemData<ITreeViewItem>> resultItemDataList = new();
             Dictionary<string, GroupedResultItem> groupedResultItems = new();
+            Dictionary<string, LogicalTreeViewItem> logicalTreeItems = ViewerModule.Instance.PerformanceTestResults.Results.Select(r =>
+            {
+                string @namespace = r.ClassName.Substring(0, r.ClassName.LastIndexOf('.'));
+                return @namespace;
+            }).Distinct().ToDictionary(n => n, n => new LogicalTreeViewItem() { Name = n });
+
             foreach (PerformanceTestResult testResult in ViewerModule.Instance.PerformanceTestResults.Results)
             {
+                string @namespace = testResult.ClassName.Substring(0, testResult.ClassName.LastIndexOf('.'));
+                string testNameWithoutNamespace = testResult.Name.Substring(@namespace.Length + 1);
+                string classNameWithoutNamespace = testResult.ClassName.Substring(@namespace.Length + 1);
+                LogicalTreeViewItem parent = logicalTreeItems[@namespace];
                 bool isParameterizedTest = PerformanceTestReportViewerUtility.IsParameterizedTest(testResult.Name, out string groupedDefinitionName, out string parameter);
                 if (isParameterizedTest || TestInformationGetter.IsComparableTest(testResult.ClassName))
                 {
                     if (string.IsNullOrEmpty(groupedDefinitionName))
-                        groupedDefinitionName = testResult.ClassName;
+                        groupedDefinitionName = classNameWithoutNamespace;
+                    else
+                        groupedDefinitionName = groupedDefinitionName.Substring(@namespace.Length + 1);
                     if (string.IsNullOrEmpty(parameter))
                         parameter = testResult.MethodName;
                     if (groupedResultItems.TryGetValue(groupedDefinitionName, out GroupedResultItem groupedItem) == false)
                     {
-                        groupedItem = new GroupedResultItem() { TestGroupName = groupedDefinitionName };
+                        groupedItem = new GroupedResultItem() { Namespace = @namespace, TestGroupName = groupedDefinitionName };
                         groupedResultItems[groupedDefinitionName] = groupedItem;
+                        parent.Children.Add(groupedItem);
                     }
 
                     var item = new GroupedParameterizedResultItem()
                     {
-                        TestName = testResult.Name, TestResult = testResult, Parameter = parameter
+                        TestName = testNameWithoutNamespace, TestResult = testResult, Parameter = parameter
                     };
                     groupedItem.Children.Add(item);
                     continue;
                 }
 
-                ITreeViewItem testResultItem = new SingleResultItem() { TestName = testResult.Name, TestResult = testResult };
-                var treeItemData = new TreeViewItemData<ITreeViewItem>(++id, testResultItem);
-                resultItemDataList.Add(treeItemData);
+                ITreeViewItem testResultItem = new SingleResultItem() { TestName = testNameWithoutNamespace, TestResult = testResult };
+                parent.Children.Add(testResultItem);
             }
 
-            foreach (GroupedResultItem groupedResultItem in groupedResultItems.Values)
+            foreach (LogicalTreeViewItem treeViewItem in logicalTreeItems.Values)
             {
-                var childrenItemData = new List<TreeViewItemData<ITreeViewItem>>();
-                foreach (GroupedParameterizedResultItem parameterizedResultItem in groupedResultItem.Children)
+                int parentId = ++id;
+                var childList = new List<TreeViewItemData<ITreeViewItem>>();
+                foreach (ITreeViewItem child in treeViewItem.Children)
                 {
-                    childrenItemData.Add(new TreeViewItemData<ITreeViewItem>(++id, parameterizedResultItem));
+                    if (child is GroupedResultItem groupedResultItem)
+                    {
+                        var grandChildList = new List<TreeViewItemData<ITreeViewItem>>();
+                        foreach (GroupedParameterizedResultItem grandChild in groupedResultItem.Children)
+                        {
+                            grandChildList.Add(new TreeViewItemData<ITreeViewItem>(++id, grandChild));
+                        }
+                        childList.Add(new TreeViewItemData<ITreeViewItem>(++id, child, grandChildList));
+                    }
+                    else
+                    {
+                        childList.Add(new TreeViewItemData<ITreeViewItem>(++id, child));
+                    }
                 }
-                
-                var treeViewItemData = new TreeViewItemData<ITreeViewItem>(++id, groupedResultItem, childrenItemData);
-                resultItemDataList.Add(treeViewItemData);
+                resultItemDataList.Add(new TreeViewItemData<ITreeViewItem>(parentId, treeViewItem, childList));
             }
 
             return resultItemDataList;

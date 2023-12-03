@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 using Unity.PerformanceTesting.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -102,35 +103,44 @@ namespace PerformanceTestReportViewer.Editor.UI.Visualizers
         {
             var names = Item.TestResults.Select(t => t.Name).ToArray();
 
-            void Do(string testNameWithNamespace, string[] parameters)
+            void Do(string @namespace, string testName, string[] parameters)
             {
-                string @namespace = testNameWithNamespace.Substring(0, testNameWithNamespace.LastIndexOf('.'));
-                string testName = testNameWithNamespace.Substring(@namespace.Length + 1);
+                var sb = new StringBuilder();
+                if (string.IsNullOrEmpty(@namespace) == false)
+                {
+                    sb.Append(@namespace);
+                    sb.Append("<br>");
+                }
+
+                if (string.IsNullOrEmpty(testName) == false)
+                {
+                    sb.Append(testName);
+                }
                 if (parameters != null && parameters.Length > 0 && parameters.Any(p => string.IsNullOrEmpty(p) == false))
                 {
-                    header.text = $"{@namespace}<br><{testName}><br>[{string.Join(", ", parameters)}]";
+                    sb.Append("<br>");
+                    sb.Append($"[{string.Join(", ", parameters)}]");
                 }
-                else
-                {
-                    header.text = $"{@namespace}<br><{testName}>";
-                }
+
+                header.text = sb.ToString();
             }
 
             if (GroupedItem != null)
             {
-                Do(GroupedItem.GroupedResult.TestGroupName, GroupedItem.GroupedResult.Children.Select(c => c.Parameter).ToArray());
+                Do(GroupedItem.GroupedResult.Namespace, GroupedItem.GroupedResult.TestGroupName, GroupedItem.GroupedResult.Children.Select(c => c.Parameter).ToArray());
             }
             else
             {
                 if (PerformanceTestReportViewerUtility.TryExtractCommonStrings(names, out string commonString, out string[] variations))
                 {
                     commonString = commonString.TrimEnd('.');
-                    
-                    Do(commonString, variations);
+                    string @namespace = commonString.Substring(0, commonString.LastIndexOf('.'));
+                    string testName = commonString.Substring(@namespace.Length + 1);
+                    Do(@namespace, testName, variations);
                 }
                 else if (names.Length == 1)
                 {
-                    Do(names[0], null);
+                    Do(null, names[0], null);
                 }
             }
         }
